@@ -1,5 +1,6 @@
 import { getUser } from "@/app/(auth)/login/actions";
 import { LoginRequestSchema } from "@/types";
+import { compare } from "bcrypt-ts";
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { authConfig } from "./auth.config";
@@ -17,10 +18,17 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
                 const { email, password } = parsedCredentials.data;
 
                 const dbUser = await getUser(email, "email");
+                if (!dbUser) {
+                    console.log("User not found");
+                    return null;
+                }
 
-                const hashedPassword = password.repeat(3);
-
-                if (!dbUser || hashedPassword !== dbUser?.hashed_password) {
+                const passwordsMatch = await compare(
+                    password,
+                    dbUser.hashed_password
+                );
+                if (!passwordsMatch) {
+                    console.error("Invalid credintials");
                     return null;
                 }
 

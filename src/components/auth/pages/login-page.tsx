@@ -24,13 +24,12 @@ export default function LoginPage() {
 
     useEffect(() => {
         if (state.status === "failed") {
-            // TODO: Use toast
             console.error("Invalid credentials!");
         } else if (state.status === "invalid_data") {
             console.error("Failed validating your submission!");
         } else if (state.status === "success") {
             setIsSuccessful(true);
-            router.refresh();
+            router.push("/");
         }
     }, [state.status, router]);
 

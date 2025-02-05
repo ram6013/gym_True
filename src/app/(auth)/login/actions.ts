@@ -1,32 +1,32 @@
 "use server";
 
+import supabase from "@/lib/supabase";
 import { LoginRequestSchema } from "@/types";
 import { User } from "next-auth";
 import { z } from "zod";
 import { signIn } from "../../../../auth";
-import supabase from "@/lib/supabase";
 
 export type IUser = User & z.infer<typeof DBUserSchema>;
 
 export async function getUser(
-  identifier: string | number,
-  type: "email" | "id" = "email" 
+    identifier: string | number,
+    type: "email" | "id" = "email"
 ): Promise<IUser | undefined> {
-  const { data, error } = await supabase
-    .from("users")
-    .select("*")
-    .eq(type, identifier);
-  if (error || !data[0]) {
-    console.error(error);
-    return undefined;
-  }
-  const rowUser = data[0];
-  const parsedData = DBUserSchema.safeParse(rowUser);
-  if (!parsedData.success) {
-    console.error(parsedData.error);
-    return undefined;
-  }
-  return data[0] as IUser;
+    const { data, error } = await supabase
+        .from("users")
+        .select("*")
+        .eq(type, identifier);
+    if (error || !data[0]) {
+        console.error(error);
+        return undefined;
+    }
+    const rowUser = data[0];
+    const parsedData = DBUserSchema.safeParse(rowUser);
+    if (!parsedData.success) {
+        console.error(parsedData.error);
+        return undefined;
+    }
+    return data[0] as IUser;
 }
 
 export interface LoginActionState {
@@ -47,7 +47,11 @@ export async function login(
         return { status: "invalid_data" };
     }
     try {
-        await signIn("credentials", { ...parsedData, redirect: false });
+        await signIn("credentials", {
+            email: parsedData.email,
+            password: parsedData.password,
+            redirect: false,
+        });
         return { status: "success" };
     } catch (e) {
         console.error(e);
