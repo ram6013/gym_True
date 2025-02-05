@@ -1,10 +1,9 @@
-import Header from "@/components/header";
+import { Calendar } from "@/components/calendar";
 
 export default function Home() {
-  return (
-    <div className="">
-      <Header/>
-    </div>
-
-  );
+    return (
+        <div className="">
+            <Calendar></Calendar>
+        </div>
+    );
 }
