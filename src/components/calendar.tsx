@@ -51,14 +51,17 @@ export function Calendar() {
     return (
         <div className="p-4 pb-20">
             <header className="flex items-center justify-between mb-8">
-                <div className="flex items-center gap-2">
-                    <ChevronLeft
-                        className="w-6 h-6 text-red-500"
-                        onClick={handleLast}
-                    />
+                <div
+                    className="flex items-center gap-2 cursor-pointer"
+                    onClick={handleLast}
+                >
+                    <ChevronLeft className="w-6 h-6 text-red-500" />
                     <span className="text-red-500 text-xl">Last</span>
                 </div>
-                <div className="flex items-center gap-2" onClick={handleNext}>
+                <div
+                    className="flex items-center gap-2 cursor-pointer"
+                    onClick={handleNext}
+                >
                     <span className="text-red-500 text-xl">Next</span>
                     <ChevronRight className="w-6 h-6 text-red-500" />
                 </div>

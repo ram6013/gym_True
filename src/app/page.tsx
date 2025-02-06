@@ -1,9 +1,5 @@
-import { Calendar } from "@/components/calendar";
+import RoutinePage from "@/components/routine";
 
 export default function Home() {
-    return (
-        <div className="">
-            <Calendar></Calendar>
-        </div>
-    );
+    return <RoutinePage></RoutinePage>;
 }
