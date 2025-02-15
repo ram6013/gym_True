@@ -27,7 +27,7 @@ export function AuthForm({
                 <Input
                     id="email"
                     name="email"
-                    className="bg-muted text-md md:text-sm"
+                    className=" text-md md:text-sm "
                     type="email"
                     placeholder="user@hosfad.dev"
                     autoComplete="email"
@@ -48,7 +48,7 @@ export function AuthForm({
                 <Input
                     id="password"
                     name="password"
-                    className="bg-muted text-md md:text-sm"
+                    className=" text-md md:text-sm"
                     type="password"
                     required
                 />

@@ -1,12 +1,6 @@
 import { cn } from "@/lib/utils";
 import { WeekDay, WEEKDAYS } from "@/types";
-import {
-    Table,
-    TableBody,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "../ui/table";
+import CreatePage from "../createPage";
 
 function RoutinePage() {
     return (
@@ -29,44 +23,15 @@ function RoutinePage() {
 }
 
 const RoutineCard = ({ title }: { title: WeekDay }) => {
-    // Como quieres hacer la list de ejercicios ???
 
     return (
-        <div className="h-64 w-full flex flex-col p-4 rounded-lg bg-neutral-800 h-fit">
-            <h1 className="font-bold text-2xl">{title as string}</h1>
+        <div className="w-full flex flex-col p-4 rounded-lg bg-neutral-800 h-fit">
+            <div className="flex items-center justify-between">
+                <h1 className="font-bold text-2xl">{title as string}</h1>
+                <input type="checkbox" />
+            </div>
             <div className="flex mt-2 p-2 rounded-xl bg-neutral-900 h-[100%]">
-                <Table>
-                    <TableHeader>
-                        <TableRow>
-                            <TableHead>Ejercicio</TableHead>
-                            <TableHead>Reps</TableHead>
-                            <TableHead>Kg</TableHead>
-                        </TableRow>
-                    </TableHeader>
-
-                    <TableBody>
-                        <TableRow>
-                            <TableHead>Pechuga</TableHead>
-                            <TableHead>15</TableHead>
-                            <TableHead>45</TableHead>
-                        </TableRow>
-                        <TableRow>
-                            <TableHead>Pechuga</TableHead>
-                            <TableHead>15</TableHead>
-                            <TableHead>45</TableHead>
-                        </TableRow>
-                        <TableRow>
-                            <TableHead>Pechuga</TableHead>
-                            <TableHead>15</TableHead>
-                            <TableHead>45</TableHead>
-                        </TableRow>
-                        <TableRow>
-                            <TableHead>Pechuga</TableHead>
-                            <TableHead>15</TableHead>
-                            <TableHead>45</TableHead>
-                        </TableRow>
-                    </TableBody>
-                </Table>
+                <CreatePage />
             </div>
         </div>
     );
