@@ -71,7 +71,7 @@ async function createUser(options: TCreateUser) {
         hashed_password: hash,
     };
 
-    // TODO: Insert user to db
+
     const { data, error: insertError } = await supabase
         .from("users")
         .insert(finalUser)

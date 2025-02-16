@@ -44,7 +44,7 @@ export default function Header() {
           </button>
         </div>
         {showModal && (
-          <div className=" fixed inset-0 bg-fondo w-full h-screen z-50 flex items-center justify-center">
+          <div className=" fixed inset-0 bg-background  w-full h-screen z-50 flex items-center justify-center">
             <button
               className="absolute top-4 right-4 text-white"
               onClick={() => setShowModal(!showModal)}
@@ -101,7 +101,7 @@ function Botons({
       </button>
       <button
         className={classNameBoton}
-        onClick={() => handleNavigate("/Home")}
+        onClick={() => handleNavigate("/")}
       >
         <FaHome className={iconClass} /> <H1 text="Home" />
       </button>

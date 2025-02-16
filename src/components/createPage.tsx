@@ -23,7 +23,7 @@ export default function CreatePage() {
   }
 
   return (
-    <form onSubmit={(e) => e.preventDefault()} className="flex flex-col w-full p-6  gap-4">
+    <form onSubmit={(e) => e.preventDefault()} className="flex flex-col w-full p-1  gap-4">
       <div className="flex justify-between gap-10">
         <div className="w-full">
           <label htmlFor="Rutina">Nombre de la rutina:</label>
@@ -75,13 +75,15 @@ const Sets = () => {
       console.log(error)
     }
   }
+  const NoInputBar =
+    "resize-none scrollbar-hide [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none";
   return (
     <>
       <div className="flex border rounded-xl flex-col gap-4 p-4 w-full">
         <div className="justify-between flex gap-2  items-center  w-full">
           <Input type="text" className=" max-w-40" placeholder="Ejercicio"></Input>
           <div className="flex gap-3">
-            <Input type="number" max={6} min={1} defaultValue={numSerie} onChange={handleChange} className="w-12 text-center"></Input>
+            <Input type="number" max={6} min={1} defaultValue={numSerie} onChange={handleChange} className={"w-12 text-center " + NoInputBar}></Input>
             <button className="text-2xl"
               type="button"
               onClick={(e) => {
@@ -96,10 +98,10 @@ const Sets = () => {
         {visibility &&
           Array.from({ length: numSerie }, (_, index: number) => (
             <div
-              className="flex flex-row gap-4 justify-center items-center "
+              className="flex flex-row gap-2 justify-center items-center "
               key={index}
             >
-              <label htmlFor="REPS">Repeticiones</label>
+              <label htmlFor="REPS">Reps</label>
               <Input type="numeric" name="REPS" />
               <label htmlFor="PESO">Kg</label>
               <Input type="numeric" name="KG" />
