@@ -1,7 +1,6 @@
 "use client";
-import { FaUser, FaCalendar, FaHome } from "react-icons/fa";
+import { FaUser, FaCalendar, FaHome, FaTable } from "react-icons/fa";
 import { CiMenuBurger } from "react-icons/ci";
-import { FaPersonRunning } from "react-icons/fa6";
 import { VscGraph } from "react-icons/vsc";
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -83,8 +82,8 @@ function Botons({
   };
   return (
     <div className={classNameDiv}>
-      <button className={classNameBoton} onClick={() => handleNavigate("/run")}>
-        <FaPersonRunning className={iconClass} />
+      <button className={classNameBoton} onClick={() => handleNavigate("/routines")}>
+        <FaTable className={iconClass} />
         <H1 text="Running" />
       </button>
       <button

@@ -1,3 +1,5 @@
+import { getUser } from "@/app/(auth)/login/actions";
+
 import { NextAuthConfig } from "next-auth";
 
 export const authConfig = {
@@ -21,12 +23,20 @@ export const authConfig = {
         },
         async jwt({ token, user }) {
             if (user) {
-                token = { ...token, user };
+                const user1 = await getUser(user.email!);
+                if (user1){
+                    token = { ...token, user : user1 };
+                }
             }
 
             return token;
         },
         async session({ session, token }) {
+
+            if (token.user) {
+                // @ts-ignore
+                session.user = token.user;
+            }
             return session;
         },
     },

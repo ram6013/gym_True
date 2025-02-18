@@ -15,7 +15,7 @@ export async function getUser(
     const { data, error } = await supabase
         .from("users")
         .select("*")
-        .eq(type, identifier);
+        .eq(type, identifier).returns<IUser[]>();
     if (error || !data[0]) {
         console.error(error);
         return undefined;
