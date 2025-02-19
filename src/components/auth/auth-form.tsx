@@ -19,7 +19,7 @@ export function AuthForm({
             <div className="flex flex-col gap-2">
                 <Label
                     htmlFor="email"
-                    className="text-zinc-600 font-normal dark:text-zinc-400"
+                    className="text-zinc-400 font-normal dark:text-zinc-200"
                 >
                     Email Address
                 </Label>
@@ -27,9 +27,9 @@ export function AuthForm({
                 <Input
                     id="email"
                     name="email"
-                    className=" text-md md:text-sm "
+                    className=" text-md md:text-sm text-white "
                     type="email"
-                    placeholder="user@hosfad.dev"
+                    placeholder="user@gmail.com"
                     autoComplete="email"
                     required
                     autoFocus
@@ -40,7 +40,7 @@ export function AuthForm({
             <div className="flex flex-col gap-2">
                 <Label
                     htmlFor="password"
-                    className="text-zinc-600 font-normal dark:text-zinc-400"
+                    className="text-zinc-400 font-normal dark:text-zinc-200"
                 >
                     Password
                 </Label>
@@ -48,7 +48,7 @@ export function AuthForm({
                 <Input
                     id="password"
                     name="password"
-                    className=" text-md md:text-sm"
+                    className=" text-md md:text-sm text-white"
                     type="password"
                     required
                 />

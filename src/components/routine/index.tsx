@@ -3,10 +3,14 @@ import { cn } from "@/lib/utils";
 import { WeekDay, WEEKDAYS } from "@/types";
 import RoutineCard from "../routine-card";
 import { auth } from "../../../auth";
+import { getRoutines } from "@/app/routines/actions";
+import { IUser } from "@/app/(auth)/login/actions";
 
 async function RoutinePage() {
-
-    const session = await auth()
+    const sesion = await auth();
+    const user = sesion!.user! as IUser;
+    const routines = (await getRoutines(user.id)) || [];
+    
     return (
         <div
             className={cn(
@@ -17,9 +21,9 @@ async function RoutinePage() {
             <div className="grid grid-cols-1 w-full items-center justify-center p-4 gap-4">
                 {WEEKDAYS.map((i: WeekDay) => (
                     <RoutineCard
-                        user={session!.user!}
-
+                        user={sesion!.user!}
                         key={"routine-card-" + i}
+                        weekDay={i}
                     ></RoutineCard>
                 ))}
             </div>

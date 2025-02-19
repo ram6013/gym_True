@@ -55,9 +55,26 @@ export async function saveRoutine(data: Routine){
     const {error} = await supabase.from("routines").update(routine).eq("id" , data.id)
     if (error) {
         console.error(error)
-        return false
+        return error
     }
-    return true
 }
 
 
+export async function deleteRoutine(user_id: number, id: number) {
+    const {data, error} = await supabase.from("routines").delete().eq("user_id" , user_id).eq("id" , id)
+    if (error) {
+        console.error(error)
+        return false
+    }
+    console.log(data)
+    return true
+}
+
+export async function saveDay(user_id: number, day: number, routine_id: number) {
+    const info = {day: day, routine_id: routine_id}
+    const {error} = await supabase.from("users").update({week: info}).eq("id" , user_id)
+    if (error) {
+        console.error(error)
+        return error
+    }
+}

@@ -16,7 +16,7 @@ export default function Header() {
   const containerRef = useRef(null);
   useOutsideClick(containerRef, () => setShowLogout(false));
 
-  const pages = ["/","/Home", "/run", "/calendar", "/stats"];
+  const pages = ["/","/Home", "/run", "/calendar", "/stats", "/routines"];
   if (pages.includes(path)) {
     return (
       <div
@@ -84,7 +84,7 @@ function Botons({
     <div className={classNameDiv}>
       <button className={classNameBoton} onClick={() => handleNavigate("/routines")}>
         <FaTable className={iconClass} />
-        <H1 text="Running" />
+        <H1 text="Routines" />
       </button>
       <button
         className={classNameBoton}

@@ -5,11 +5,15 @@ import { Input } from "./ui/input";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 import { createRoutine, Exercise, ExerciseInfo, Routine, saveRoutine } from "@/app/routines/actions";
 import { IUser } from "@/app/(auth)/login/actions";
+import toast from "react-hot-toast";
 
 
 
-export default function CreatePage({ routine, user }: { routine?: Routine, user: IUser }) {
-  const [numEx, setNumEx] = useState<number>(3);
+
+
+
+export default function CreatePage({ routine, user, setCreate }: { routine?: Routine, user: IUser, setCreate?: (create: boolean) => void }) {
+  const [numEx, setNumEx] = useState<number>(routine?.num_ex ?? 3);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(e.target.value);
@@ -25,7 +29,6 @@ export default function CreatePage({ routine, user }: { routine?: Routine, user:
       setNumEx(value);
     }
   }
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const ejercicios: Exercise[] = [];
@@ -48,7 +51,6 @@ export default function CreatePage({ routine, user }: { routine?: Routine, user:
               rpe: Number(rpeInput.value)
             }
           )
-          console.log(repsInput.value)
         }
 
         const exercise: Exercise = {
@@ -75,7 +77,9 @@ export default function CreatePage({ routine, user }: { routine?: Routine, user:
     if (response == false){
       console.error("No se ha podido guardar la rutina")
     }
-
+    setCreate?.(false)
+    toast.success("Rutina guardada")
+    window.location.reload()
   };
 
 
@@ -84,7 +88,7 @@ export default function CreatePage({ routine, user }: { routine?: Routine, user:
       <div className="flex justify-between gap-10">
         <div className="w-full">
           <label htmlFor="Rutina">Nombre de la rutina:</label>
-          <Input className="" type="text" name="Rutina" />
+          <Input className="" type="text" name="Rutina" defaultValue={routine?.name}/>
         </div>
         <div className="w-full">
           <label htmlFor="NumEj">Número de ejercicios</label>
@@ -92,7 +96,7 @@ export default function CreatePage({ routine, user }: { routine?: Routine, user:
             className=""
             max={15}
             min={1}
-            defaultValue={numEx}
+            defaultValue={routine?.num_ex}
             type="text"
             name="NumEj"
             onChange={handleChange}
@@ -101,14 +105,14 @@ export default function CreatePage({ routine, user }: { routine?: Routine, user:
 
       </div>
       {Array.from({ length: numEx }, (_, index: number) => (
-        <Sets key={index} id={index} />
+        <Sets key={index} id={index} rotuine={routine}/>
       ))}
       <button type="submit">Guardar Rutina</button>
     </form>
   );
 }
 
-const Sets = ({ id, }: { id: number }) => {
+const Sets = ({ id, rotuine }: { id: number, rotuine?: Routine }) => {
   const [visibility, setVisibility] = useState(false);
   const [numSerie, setnumSerie] = useState(3)
 
@@ -138,9 +142,9 @@ const Sets = ({ id, }: { id: number }) => {
     <>
       <div className="flex border rounded-xl flex-col gap-4 p-4 w-full">
         <div className="justify-between flex gap-2  items-center  w-full">
-          <Input type="text" className=" max-w-40" placeholder={`Ejercicio ${id}`} name={`Ejercicio${id}`}></Input>
+          <Input type="text" className=" max-w-40" placeholder={`Ejercicio ${id}`} name={`Ejercicio${id}`} defaultValue={rotuine?.exercises[id]?.name}></Input>
           <div className="flex gap-3">
-            <Input type="number" max={6} min={1} defaultValue={numSerie} name={`NumSerie${id}`} onChange={handleChange} className={"w-12 text-center " + NoInputBar}></Input>
+            <Input type="number" max={6} min={1} defaultValue={rotuine?.exercises[id]?.num_serie} name={`NumSerie${id}`} onChange={handleChange} className={"w-12 text-center " + NoInputBar}></Input>
             <button className="text-2xl"
               type="button"
               onClick={(e) => {
@@ -159,11 +163,11 @@ const Sets = ({ id, }: { id: number }) => {
               key={index}
             >
               <label htmlFor="REPS">Reps</label>
-              <Input type="numeric" name={`Ejercicio${id}REPS${index}`} defaultValue={0}/>
+              <Input type="numeric" name={`Ejercicio${id}REPS${index}`} defaultValue={rotuine?.exercises[id]?.series[index]?.reps}/>
               <label htmlFor="PESO">Kg</label>
-              <Input type="numeric" name={`Ejercicio${id}KG${index}`} defaultValue={0}/>
+              <Input type="numeric" name={`Ejercicio${id}KG${index}`} defaultValue={rotuine?.exercises[id]?.series[index]?.kg}/>
               <label htmlFor="RPE">RPE</label>
-              <Input type="numeric" name={`Ejercicio${id}RPE${index}`} defaultValue={0}/>
+              <Input type="numeric" name={`Ejercicio${id}RPE${index}`} defaultValue={rotuine?.exercises[id]?.series[index]?.rpe}/>
             </div>
           ))}
       </div>
