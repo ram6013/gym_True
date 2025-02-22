@@ -4,7 +4,7 @@ import RoutineCard from "./routine-card";
 import { IUser } from "@/app/(auth)/login/actions";
 import { useState } from "react";
 
-export default function Routines({routines, user}: { routines: Routine[], user: IUser }) {
+export default function Routines({routines, user, view}: { routines: Routine[], user: IUser , view: boolean}) {
     const [create, setCreate] = useState(false);
     return (
         <div >
@@ -14,7 +14,7 @@ export default function Routines({routines, user}: { routines: Routine[], user: 
         routines?.map((routine: Routine, key) => {
             return (
                 <div key={key} className="mt-4">
-                <RoutineCard key={key} routine={routine} user={user}/>
+                <RoutineCard key={key} routine={routine} user={user} view={view}/>
                 </div>
             )
         }) 

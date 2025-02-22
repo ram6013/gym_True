@@ -8,6 +8,7 @@ export type Routine = {
     user_id: number;
     num_ex: number;
     exercises: Exercise[];
+    day?: number;
 }
 
 export type Exercise = {
@@ -60,21 +61,27 @@ export async function saveRoutine(data: Routine){
 }
 
 
-export async function deleteRoutine(user_id: number, id: number) {
-    const {data, error} = await supabase.from("routines").delete().eq("user_id" , user_id).eq("id" , id)
+export async function deleteRoutine(id: number, user_id: number) {
+    console.log(user_id, id)
+    const {error} = await supabase.from("routines").delete().eq("user_id" , user_id).eq("id" , id)
     if (error) {
         console.error(error)
         return false
     }
-    console.log(data)
     return true
 }
 
 export async function saveDay(user_id: number, day: number, routine_id: number) {
-    const info = {day: day, routine_id: routine_id}
-    const {error} = await supabase.from("users").update({week: info}).eq("id" , user_id)
+    const {error} = await supabase.from("routines").update({day: null}).eq("user_id", user_id).eq("day", day)
     if (error) {
         console.error(error)
         return error
     }
-}
+    const {error: error2} = await supabase.from("routines").update({day}).eq("user_id", user_id).eq("id", routine_id)
+    if (error2) {
+        console.error(error2)
+        return error2
+    }
+    return {success: true}
+ }
+ 

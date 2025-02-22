@@ -82,10 +82,6 @@ function Botons({
   };
   return (
     <div className={classNameDiv}>
-      <button className={classNameBoton} onClick={() => handleNavigate("/routines")}>
-        <FaTable className={iconClass} />
-        <H1 text="Routines" />
-      </button>
       <button
         className={classNameBoton}
         onClick={() => handleNavigate("/calendar")}
@@ -97,6 +93,10 @@ function Botons({
         onClick={() => handleNavigate("/stats")}
       >
         <VscGraph className={iconClass} /> <H1 text="Stats" />
+      </button>
+      <button className={classNameBoton} onClick={() => handleNavigate("/routines")}>
+        <FaTable className={iconClass} />
+        <H1 text="Routines" />
       </button>
       <button
         className={classNameBoton}

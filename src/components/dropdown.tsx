@@ -1,16 +1,20 @@
 import { IUser } from "@/app/(auth)/login/actions";
 import { Routine, saveDay } from "@/app/routines/actions";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 const DropdownButton = ({routine, user }: {routine?: Routine, user: IUser}) => {
   const [isOpen, setIsOpen] = useState(false);
   const handleClick = async (index: number) => {
     const response = await saveDay(user.id, index, routine!.id);
-    if (response) {
-      console.error(response)
+    if ('success' in response) {
+      toast.success("Rutina guardada")
+      setIsOpen(false);
+      return;
     }
-    setIsOpen(false);
-  }
+    toast.error("Error al guardar la rutina")
+    return;
+  };
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
@@ -42,7 +46,7 @@ const DropdownButton = ({routine, user }: {routine?: Routine, user: IUser}) => {
       </button>
 
       {isOpen && (
-  <div className="absolute right-0 mt-2 w-48 bg-green-900 border-2 border-green-950 rounded-md shadow-lg z-10">
+  <div className="absolute right-0 mt-2 w-48 bg-green-900 border-2 border-green-950 rounded-xl shadow-lg z-10">
   {Array.from({ length: 7 }, (_, index) => (
     <div key={index}>
       <button className="w-full" onClick={() => handleClick(index)}>

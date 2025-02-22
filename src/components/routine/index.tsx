@@ -1,6 +1,6 @@
 
 import { cn } from "@/lib/utils";
-import { WeekDay, WEEKDAYS } from "@/types";
+import { WEEKDAYS } from "@/types";
 import RoutineCard from "../routine-card";
 import { auth } from "../../../auth";
 import { getRoutines } from "@/app/routines/actions";
@@ -19,12 +19,18 @@ async function RoutinePage() {
             )}
         >
             <div className="grid grid-cols-1 w-full items-center justify-center p-4 gap-4">
-                {WEEKDAYS.map((i: WeekDay) => (
-                    <RoutineCard
-                        user={sesion!.user!}
-                        key={"routine-card-" + i}
-                        weekDay={i}
-                    ></RoutineCard>
+                {WEEKDAYS.map((dayName, index) => (
+                    routines
+                        .filter((routine) => routine.day === index) 
+                        .map((routine) => (
+                            <RoutineCard
+                                user={sesion!.user!}
+                                key={`routine-card-${index}`}
+                                weekDay={dayName}
+                                routine={routine}
+                                view = {false}
+                            />
+                        ))
                 ))}
             </div>
         </div>

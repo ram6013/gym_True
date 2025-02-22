@@ -91,7 +91,7 @@ export default function CreatePage({ routine, user, setCreate }: { routine?: Rou
           <Input className="" type="text" name="Rutina" defaultValue={routine?.name}/>
         </div>
         <div className="w-full">
-          <label htmlFor="NumEj">Número de ejercicios</label>
+          <label htmlFor="NumEj">Número de ejs</label>
           <Input
             className=""
             max={15}
@@ -114,7 +114,7 @@ export default function CreatePage({ routine, user, setCreate }: { routine?: Rou
 
 const Sets = ({ id, rotuine }: { id: number, rotuine?: Routine }) => {
   const [visibility, setVisibility] = useState(false);
-  const [numSerie, setnumSerie] = useState(3)
+  const [numSerie, setnumSerie] = useState(rotuine?.exercises[id]?.num_serie ?? 3);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();

@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useActionState, useEffect, useState } from "react";
 import { AuthForm } from "../auth-form";
 import { SubmitButton } from "../submit-button";
+import toast from "react-hot-toast";
 
 export default function SignupPage() {
     const router = useRouter();
@@ -23,10 +24,13 @@ export default function SignupPage() {
     useEffect(() => {
         if (state.status === "user_exists") {
             console.error("Account already exists");
+            toast.error("Account already exists");
         } else if (state.status === "failed") {
             console.error("Failed to create account");
+            toast.error("Failed to create account");
         } else if (state.status === "invalid_data") {
             console.error("Failed validating your submission!");
+            toast.error("Failed validating your submission!");
         } else if (state.status === "success") {
             console.info("Account created successfully");
             setIsSuccessful(true);

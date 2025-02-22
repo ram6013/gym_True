@@ -8,6 +8,7 @@ import { login, type LoginActionState } from "@/app/(auth)/login/actions";
 
 import { AuthForm } from "@/components/auth/auth-form";
 import { SubmitButton } from "@/components/auth/submit-button";
+import toast from "react-hot-toast";
 
 export default function LoginPage() {
     const router = useRouter();
@@ -25,8 +26,10 @@ export default function LoginPage() {
     useEffect(() => {
         if (state.status === "failed") {
             console.error("Invalid credentials!");
+            toast.error("Invalid credentials!");
         } else if (state.status === "invalid_data") {
             console.error("Failed validating your submission!");
+            toast.error("Failed validating your submission!");
         } else if (state.status === "success") {
             setIsSuccessful(true);
             router.push("/");
