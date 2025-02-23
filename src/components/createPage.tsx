@@ -152,7 +152,7 @@ const Sets = ({ id, rotuine }: { id: number, rotuine?: Routine }) => {
                 setVisibility(!visibility);
               }}
             >
-              {visibility ? <MdVisibilityOff /> : <MdVisibility />}
+              {visibility ? <MdVisibilityOff className="text-white"/> : <MdVisibility className="text-white"/>}
             </button>
           </div>
         </div>
