@@ -88,12 +88,12 @@ export default function CreatePage({ routine, user, setCreate }: { routine?: Rou
       <div className="flex justify-between gap-10">
         <div className="w-full">
           <label htmlFor="Rutina">Nombre de la rutina:</label>
-          <Input className="" type="text" name="Rutina" defaultValue={routine?.name}/>
+          <Input className="text-white" type="text" name="Rutina" defaultValue={routine?.name} />
         </div>
         <div className="w-full">
           <label htmlFor="NumEj">Número de ejs</label>
           <Input
-            className=""
+            className="text-white"
             max={15}
             min={1}
             defaultValue={routine?.num_ex}
@@ -142,9 +142,9 @@ const Sets = ({ id, rotuine }: { id: number, rotuine?: Routine }) => {
     <>
       <div className="flex border rounded-xl flex-col gap-4 p-4 w-full">
         <div className="justify-between flex gap-2  items-center  w-full">
-          <Input type="text" className=" max-w-40" placeholder={`Ejercicio ${id}`} name={`Ejercicio${id}`} defaultValue={rotuine?.exercises[id]?.name}></Input>
+          <Input type="text" className="text-white max-w-40" placeholder={`Ejercicio ${id}`} name={`Ejercicio${id}`} defaultValue={rotuine?.exercises[id]?.name}></Input>
           <div className="flex gap-3">
-            <Input type="number" max={6} min={1} defaultValue={rotuine?.exercises[id]?.num_serie} name={`NumSerie${id}`} onChange={handleChange} className={"w-12 text-center " + NoInputBar}></Input>
+            <Input type="number" max={6} min={1} defaultValue={rotuine?.exercises[id]?.num_serie} name={`NumSerie${id}`} onChange={handleChange} className={"text-white w-12 text-center " + NoInputBar}></Input>
             <button className="text-2xl"
               type="button"
               onClick={(e) => {
@@ -162,12 +162,12 @@ const Sets = ({ id, rotuine }: { id: number, rotuine?: Routine }) => {
               className="flex flex-row gap-2 justify-center items-center "
               key={index}
             >
-              <label htmlFor="REPS">Reps</label>
-              <Input type="numeric" name={`Ejercicio${id}REPS${index}`} defaultValue={rotuine?.exercises[id]?.series[index]?.reps}/>
               <label htmlFor="PESO">Kg</label>
-              <Input type="numeric" name={`Ejercicio${id}KG${index}`} defaultValue={rotuine?.exercises[id]?.series[index]?.kg}/>
+              <Input type="numeric" className="text-white" name={`Ejercicio${id}KG${index}`} defaultValue={rotuine?.exercises[id]?.series[index]?.kg} />
+              <label htmlFor="REPS">Reps</label>
+              <Input type="numeric" className="text-white" name={`Ejercicio${id}REPS${index}`} defaultValue={rotuine?.exercises[id]?.series[index]?.reps} />
               <label htmlFor="RPE">RPE</label>
-              <Input type="numeric" name={`Ejercicio${id}RPE${index}`} defaultValue={rotuine?.exercises[id]?.series[index]?.rpe}/>
+              <Input type="numeric" className="text-white" name={`Ejercicio${id}RPE${index}`} defaultValue={rotuine?.exercises[id]?.series[index]?.rpe} />
             </div>
           ))}
       </div>
