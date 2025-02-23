@@ -7,7 +7,7 @@ import { IUser } from "@/app/(auth)/login/actions";
 import DeleteButton from "./delete-button";
 import DropdownButton from "./dropdown";
 import { WeekDay } from "@/types";
-const RoutineCard = ({ routine, user, setCreate, weekDay, view }: { routine?: Routine, user: IUser, setCreate?: (create: boolean) => void, weekDay?: WeekDay, view?: boolean }) => {
+const RoutineCard = ({ routine, user, setCreate, weekDay, view }: { routine?: Routine, user: IUser, setCreate?: (create: boolean) => void, weekDay?: string, view?: boolean }) => {
     const [siesta, setSiesta] = useState(false);
     return (
         <div className="w-full flex flex-col p-4 rounded-lg bg-neutral-800 h-fit">

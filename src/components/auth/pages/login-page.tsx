@@ -29,7 +29,7 @@ export default function LoginPage() {
         } else if (state.status === "success") {
             setIsSuccessful(true);
             router.push("/");
-            setTimeout(() => window.location.reload(), 100);
+            
         }
     }, [state.status, router]);
 

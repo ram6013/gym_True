@@ -11,9 +11,9 @@ export default async function AuthLayout({
     if (session?.user) redirect("/");
 
     return (
-        <html lang="en">
+        <div lang="en">
             <Toaster />
-            <body>{children}</body>
-        </html>
+            <div>{children}</div>
+        </div>
     );
 }

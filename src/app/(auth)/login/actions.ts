@@ -2,12 +2,12 @@
 
 import supabase from "@/lib/supabase";
 import { LoginRequestSchema } from "@/types";
-import { User } from "next-auth";
+import { Session, User } from "next-auth";
 import { z } from "zod";
 import { signIn } from "../../../../auth";
 
 export type IUser = User & z.infer<typeof DBUserSchema>;
-
+export type Isession = Session & { user: IUser };
 export async function getUser(
     identifier: string | number,
     type: "email" | "id" = "email"

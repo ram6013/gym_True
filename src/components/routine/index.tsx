@@ -4,10 +4,10 @@ import { WEEKDAYS } from "@/types";
 import RoutineCard from "../routine-card";
 import { auth } from "../../../auth";
 import { getRoutines } from "@/app/routines/actions";
-import { IUser } from "@/app/(auth)/login/actions";
+import { Isession, IUser } from "@/app/(auth)/login/actions";
 
 async function RoutinePage() {
-    const sesion = await auth();
+    const sesion = await auth() as Isession;
     const user = sesion!.user! as IUser;
     const routines = (await getRoutines(user.id)) || [];
     
