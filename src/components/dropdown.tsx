@@ -18,7 +18,7 @@ const DropdownButton = ({routine, user }: {routine?: Routine, user: IUser}) => {
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
-  const week = ["Lunes", "Martes", "Miernes", "Jueves", "Viernes", "Sabado", "Domingo"];
+  const week = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"];
   return (
     <div className="relative inline-block text-left">
       <button
