@@ -10,7 +10,7 @@ const RoutineCard = ({ routine, user, setCreate, weekDay, view }: { routine?: Ro
     const [siesta, setSiesta] = useState(false);
     return (
         <div className="w-full flex flex-col p-4 rounded-lg bg-neutral-800 h-fit">
-            <h1 className="text-2xl lg:text-5xl">{weekDay || ""}</h1>
+            <h1 className="text-2xl lg:text-5xl text-white">{weekDay || ""}</h1>
             {view &&
             <div className="flex items-center justify-between">
                 <Toggle setSiesta={setSiesta} siesta={siesta} />

@@ -2,10 +2,15 @@
 import { Routine } from "@/app/routines/actions";
 import RoutineCard from "./routine-card";
 import { IUser } from "@/app/(auth)/login/actions";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Routines({routines, user, view}: { routines: Routine[], user: IUser , view: boolean}) {
     const [create, setCreate] = useState(false);
+    useEffect(() => {
+        if (routines.length === 0) {
+            setCreate(true);
+        }
+    }, [routines]);
     return (
         <div >
             <button className="bg-green-800 hover:bg-green-600 text-white font-bold py-2 px-4 rounded ml-2 mt-4" onClick={() => setCreate(!create)}>{create ? "Cerrar" : "Crear rutina"}</button>

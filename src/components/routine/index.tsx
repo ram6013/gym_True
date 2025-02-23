@@ -5,12 +5,18 @@ import RoutineCard from "../routine-card";
 import { auth } from "../../../auth";
 import { getRoutines } from "@/app/routines/actions";
 import { Isession, IUser } from "@/app/(auth)/login/actions";
+import { FaTable } from "react-icons/fa";
 
 async function RoutinePage() {
     const sesion = await auth() as Isession;
     const user = sesion!.user! as IUser;
     const routines = (await getRoutines(user.id)) || [];
-    
+    if (routines.length === 0) {
+        return <div className="flex flex-col h-screen items-center gap-4 p-8">
+            <h1 className="text-4xl text-white">No routines found</h1>
+            <label className="flex items-center gap-4"><h2 className="text-2xl text-white">Create routines on </h2><FaTable className="text-white text-4xl"/></label>
+        </div>;
+    }
     return (
         <div
             className={cn(
