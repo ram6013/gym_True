@@ -53,11 +53,11 @@ export default function LoginPage() {
                     <SubmitButton isSuccessful={isSuccessful}>
                         Sign in
                     </SubmitButton>
-                    <p className="text-center text-sm text-gray-600 mt-4 dark:text-zinc-400">
+                    <p className="text-center text-sm text-white dark:text-zinc-400">
                         {"Don't have an account? "}
                         <Link
                             href="/signup"
-                            className="font-semibold text-gray-800 hover:underline dark:text-zinc-200"
+                            className="font-semibold  hover:underline text-white dark:text-zinc-200"
                         >
                             Sign up
                         </Link>

@@ -25,7 +25,7 @@ const RoutineCard = ({ routine, user, setCreate, weekDay, view }: { routine?: Ro
                     <CreatePage routine={routine} user={user} setCreate={setCreate} />
                 </div> :
                 <div className="flex justify-center items-center text-2xl lg:text-5xl">
-                    <h1 >🤩 Día de siesta 🤩</h1>
+                    <h1 className="text-white">🤩 Día de siesta 🤩</h1>
                 </div>
             }
         </div>

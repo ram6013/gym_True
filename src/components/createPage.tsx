@@ -87,11 +87,11 @@ export default function CreatePage({ routine, user, setCreate }: { routine?: Rou
     <form onSubmit={(e) => handleSubmit(e)} className="flex flex-col w-full p-1  gap-4">
       <div className="flex justify-between gap-10">
         <div className="w-full">
-          <label htmlFor="Rutina">Nombre de la rutina:</label>
+          <label className="text-white" htmlFor="Rutina">Nombre de la rutina:</label>
           <Input className="text-white" type="text" name="Rutina" defaultValue={routine?.name} />
         </div>
         <div className="w-full">
-          <label htmlFor="NumEj">Número de ejs</label>
+          <label className="text-white" htmlFor="NumEj">Número de ejs</label>
           <Input
             className="text-white"
             max={15}
@@ -107,7 +107,7 @@ export default function CreatePage({ routine, user, setCreate }: { routine?: Rou
       {Array.from({ length: numEx }, (_, index: number) => (
         <Sets key={index} id={index} rotuine={routine}/>
       ))}
-      <button type="submit">Guardar Rutina</button>
+      <button className="text-white" type="submit">Guardar Rutina</button>
     </form>
   );
 }
@@ -162,11 +162,11 @@ const Sets = ({ id, rotuine }: { id: number, rotuine?: Routine }) => {
               className="flex flex-row gap-2 justify-center items-center "
               key={index}
             >
-              <label htmlFor="PESO">Kg</label>
+              <label htmlFor="PESO" className="text-white">Kg</label>
               <Input type="numeric" className="text-white" name={`Ejercicio${id}KG${index}`} defaultValue={rotuine?.exercises[id]?.series[index]?.kg} />
-              <label htmlFor="REPS">Reps</label>
+              <label htmlFor="REPS" className="text-white">Reps</label>
               <Input type="numeric" className="text-white" name={`Ejercicio${id}REPS${index}`} defaultValue={rotuine?.exercises[id]?.series[index]?.reps} />
-              <label htmlFor="RPE">RPE</label>
+              <label htmlFor="RPE"  className="text-white">RPE</label>
               <Input type="numeric" className="text-white" name={`Ejercicio${id}RPE${index}`} defaultValue={rotuine?.exercises[id]?.series[index]?.rpe} />
             </div>
           ))}
