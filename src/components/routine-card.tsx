@@ -6,7 +6,6 @@ import { useState } from "react";
 import { IUser } from "@/app/(auth)/login/actions";
 import DeleteButton from "./delete-button";
 import DropdownButton from "./dropdown";
-import { WeekDay } from "@/types";
 const RoutineCard = ({ routine, user, setCreate, weekDay, view }: { routine?: Routine, user: IUser, setCreate?: (create: boolean) => void, weekDay?: string, view?: boolean }) => {
     const [siesta, setSiesta] = useState(false);
     return (
