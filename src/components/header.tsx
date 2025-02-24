@@ -16,7 +16,7 @@ export default function Header() {
   const containerRef = useRef(null);
   useOutsideClick(containerRef, () => setShowLogout(false));
 
-  const pages = ["/","/Home", "/run", "/calendar", "/stats", "/routines"];
+  const pages = ["/","/Home", "/run", "/calendar", "/stats", "/routines", "/friends"];
   if (pages.includes(path)) {
     return (
       <div

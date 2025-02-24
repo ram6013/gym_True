@@ -4,7 +4,8 @@ import supabase from "@/lib/supabase";
 import { LoginRequestSchema } from "@/types";
 import { Session, User } from "next-auth";
 import { z } from "zod";
-import { signIn } from "../../../../auth";
+import { signIn, signOut } from "../../../../auth";
+
 
 export type IUser = User & z.infer<typeof DBUserSchema>;
 export type Isession = Session & { user: IUser };
@@ -64,3 +65,7 @@ const DBUserSchema = z.object({
     email: z.string().email(),
     hashed_password: z.string(),
 });
+export async function logOut() {
+  "use server";
+  await signOut();
+}
