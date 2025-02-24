@@ -91,7 +91,7 @@ export default function CreatePage({ routine, user, setCreate }: { routine?: Rou
           <Input className="text-white" type="text" name="Rutina" defaultValue={routine?.name} />
         </div>
         <div className="w-full">
-          <label className="text-white" htmlFor="NumEj">Número de ejs</label>
+          <label className="text-white" htmlFor="NumEj">Nº de ejercicios</label>
           <Input
             className="text-white "
             max={15}
