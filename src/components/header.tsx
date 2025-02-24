@@ -1,5 +1,5 @@
 "use client";
-import { FaUser, FaCalendar, FaHome, FaTable } from "react-icons/fa";
+import { FaUser, FaCalendar, FaHome } from "react-icons/fa";
 import { CiMenuBurger } from "react-icons/ci";
 import { VscGraph } from "react-icons/vsc";
 import { useRef, useState } from "react";
@@ -7,6 +7,8 @@ import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 import { useOutsideClick } from "@/lib/hooks/useOutsideClick";
 import { IoMdClose } from "react-icons/io";
+import { CgGym } from "react-icons/cg";
+
 export default function Header() {
   const [showModal, setShowModal] = useState(false);
   const [showLogaut, setShowLogout] = useState(false);
@@ -95,7 +97,7 @@ function Botons({
         <VscGraph className={iconClass} /> <H1 text="Stats" />
       </button>
       <button className={classNameBoton} onClick={() => handleNavigate("/routines")}>
-        <FaTable className={iconClass} />
+        <CgGym className={iconClass} />
         <H1 text="Routines" />
       </button>
       <button

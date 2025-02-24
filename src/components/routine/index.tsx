@@ -5,7 +5,7 @@ import RoutineCard from "../routine-card";
 import { auth } from "../../../auth";
 import { getRoutines } from "@/app/routines/actions";
 import { Isession, IUser } from "@/app/(auth)/login/actions";
-import { FaTable } from "react-icons/fa";
+import { CgGym } from "react-icons/cg";
 
 async function RoutinePage() {
     const sesion = await auth() as Isession;
@@ -14,7 +14,7 @@ async function RoutinePage() {
     if (routines.length === 0) {
         return <div className="flex flex-col h-screen items-center gap-4 p-8">
             <h1 className="text-4xl text-white">No routines found</h1>
-            <label className="flex items-center gap-4"><h2 className="text-2xl text-white">Create routines on </h2><FaTable className="text-white text-4xl"/></label>
+            <label className="flex items-center gap-4"><h2 className="text-2xl text-white">Create routines on </h2><CgGym className="text-white text-4xl"/></label>
         </div>;
     }
     return (

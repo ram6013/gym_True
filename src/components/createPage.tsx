@@ -173,7 +173,7 @@ const Sets = ({ id, rotuine }: { id: number, rotuine?: Routine }) => {
               <Input type="numeric" className="text-white" name={`Ejercicio${id}RPE${index}`} defaultValue={rotuine?.exercises[id]?.series[index]?.rpe} />
             </div>
           ))}
-          <textarea name={`Comentarios${id}`} className="bg-neutral-800 text-white placeholder:text-white w-full" defaultValue={rotuine?.exercises[id]?.comentarios} placeholder="Comentarios adicionales..."></textarea>
+          <textarea name={`Comentarios${id}`} className="bg-neutral-800 text-white placeholder:text-white w-full p-2" defaultValue={rotuine?.exercises[id]?.comentarios} placeholder="Comentarios adicionales..."></textarea>
         </div>
       </div>
     </>
