@@ -30,6 +30,7 @@ async function RoutinePage() {
                         .filter((routine) => routine.day === index) 
                         .map((routine) => (
                             <RoutineCard
+                                defaultOpen={false}
                                 user={sesion!.user!}
                                 key={`routine-card-${index}`}
                                 weekDay={dayName}
