@@ -93,7 +93,7 @@ export default function CreatePage({ routine, user, setCreate }: { routine?: Rou
         <div className="w-full">
           <label className="text-white" htmlFor="NumEj">Número de ejs</label>
           <Input
-            className="text-white"
+            className="text-white "
             max={15}
             min={1}
             defaultValue={routine?.num_ex}
@@ -107,7 +107,7 @@ export default function CreatePage({ routine, user, setCreate }: { routine?: Rou
       {Array.from({ length: numEx }, (_, index: number) => (
         <Sets key={index} id={index} rotuine={routine}/>
       ))}
-      <button className="text-white" type="submit">Guardar Rutina</button>
+      <button className="text-white text-2xl p-2" type="submit">Guardar Rutina</button>
     </form>
   );
 }
@@ -156,10 +156,10 @@ const Sets = ({ id, rotuine }: { id: number, rotuine?: Routine }) => {
             </button>
           </div>
         </div>
-        {visibility &&
+        { 
           Array.from({ length: numSerie }, (_, index: number) => (
             <div
-              className="flex flex-row gap-2 justify-center items-center "
+              className={`flex flex-row gap-2 justify-center items-center ${visibility ? "" : "hidden"}` }
               key={index}
             >
               <label htmlFor="PESO" className="text-white">Kg</label>
