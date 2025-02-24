@@ -36,6 +36,7 @@ export default function CreatePage({ routine, user, setCreate }: { routine?: Rou
     for (let i = 0; i < numEx; i++) {
       const nameInput = e.currentTarget[`Ejercicio${i}`] as HTMLInputElement;
       const seriesInput = e.currentTarget[`NumSerie${i}`] as HTMLInputElement;
+      const comentariosInput = e.currentTarget[`Comentarios${i}`] as HTMLInputElement;
       const numSeries = Number(seriesInput.value)
       if (nameInput && seriesInput) {
         const series: ExerciseInfo[] = []
@@ -56,6 +57,7 @@ export default function CreatePage({ routine, user, setCreate }: { routine?: Rou
         const exercise: Exercise = {
           name: nameInput.value,
           num_serie: Number(seriesInput.value),
+          comentarios: comentariosInput.value,
           series: series
         }
         ejercicios.push(exercise)
@@ -156,6 +158,7 @@ const Sets = ({ id, rotuine }: { id: number, rotuine?: Routine }) => {
             </button>
           </div>
         </div>
+        <div className={`${visibility ? "" : "hidden"} flex flex-col gap-4`}>
         { 
           Array.from({ length: numSerie }, (_, index: number) => (
             <div
@@ -170,6 +173,8 @@ const Sets = ({ id, rotuine }: { id: number, rotuine?: Routine }) => {
               <Input type="numeric" className="text-white" name={`Ejercicio${id}RPE${index}`} defaultValue={rotuine?.exercises[id]?.series[index]?.rpe} />
             </div>
           ))}
+          <textarea name={`Comentarios${id}`} className="bg-neutral-800 text-white placeholder:text-white w-full" defaultValue={rotuine?.exercises[id]?.comentarios} placeholder="Comentarios adicionales..."></textarea>
+        </div>
       </div>
     </>
   );
