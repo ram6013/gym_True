@@ -11,6 +11,7 @@ async function RoutinePage() {
     const sesion = await auth() as Isession;
     const user = sesion!.user! as IUser;
     const routines = (await getRoutines(user.id)) || [];
+    let counter = 0;
     if (routines.length === 0) {
         return <div className="flex flex-col h-screen items-center gap-4 p-8">
             <h1 className="text-4xl text-white">No routines found</h1>
@@ -29,6 +30,7 @@ async function RoutinePage() {
                     routines
                         .filter((routine) => routine.day === index) 
                         .map((routine) => (
+                            counter++,
                             <RoutineCard
                                 defaultOpen={false}
                                 user={sesion!.user!}
@@ -36,6 +38,7 @@ async function RoutinePage() {
                                 weekDay={dayName}
                                 routine={routine}
                                 view = {false}
+                                counter={counter}
                             />
                         ))
                 ))}

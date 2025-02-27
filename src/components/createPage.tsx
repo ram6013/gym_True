@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useRef, useState } from "react";
 import { Input } from "./ui/input";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 import { createRoutine, Exercise, ExerciseInfo, Routine, saveRoutine } from "@/app/routines/actions";
@@ -12,9 +12,9 @@ import toast from "react-hot-toast";
 
 
 
-export default function CreatePage({ routine, user, setCreate }: { routine?: Routine, user: IUser, setCreate?: (create: boolean) => void }) {
+export default function CreatePage({ routine, user, setCreate, counter }: { routine?: Routine, user: IUser, setCreate?: (create: boolean) => void, counter?: number }) {
   const [numEx, setNumEx] = useState<number>(routine?.num_ex ?? 3);
-
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(e.target.value);
     if (!Number.isNaN(value)) {
@@ -29,6 +29,7 @@ export default function CreatePage({ routine, user, setCreate }: { routine?: Rou
       setNumEx(value);
     }
   }
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const ejercicios: Exercise[] = [];
@@ -81,12 +82,32 @@ export default function CreatePage({ routine, user, setCreate }: { routine?: Rou
     }
     setCreate?.(false)
     toast.success("Rutina guardada")
-    window.location.reload()
+    
   };
 
 
+
+  const HandleOnchangeForm = (e: React.FormEvent<HTMLFormElement>) => {
+    if (counter){
+    e.preventDefault();
+    const { value } = e.target as HTMLInputElement;
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    timeoutRef.current = setTimeout(() => {
+      if (value) {
+        if (document.forms[counter-1]){
+          document.forms[counter-1].requestSubmit();
+        }
+      }
+    }, 1500);
+  }
+  };
+
+
+
+
+
   return (
-    <form onSubmit={(e) => handleSubmit(e)} className="flex flex-col w-full p-1  gap-4">
+    <form id="formulario" onSubmit={(e) => handleSubmit(e)} onChange={(e) => HandleOnchangeForm(e)} className="flex flex-col w-full p-1  gap-4">
       <div className="flex justify-between gap-10">
         <div className="w-full">
           <label className="text-white" htmlFor="Rutina">Nombre de la rutina:</label>

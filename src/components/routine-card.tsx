@@ -6,7 +6,7 @@ import { IUser } from "@/app/(auth)/login/actions";
 import DeleteButton from "./delete-button";
 import DropdownButton from "./dropdown";
 import { FaAngleDown, FaAngleUp } from "react-icons/fa";
-const RoutineCard = ({ routine, user, setCreate, weekDay, view, defaultOpen }: { routine?: Routine, user: IUser, setCreate?: (create: boolean) => void, weekDay?: string, view?: boolean, defaultOpen?: boolean }) => {
+const RoutineCard = ({ routine, user, setCreate, weekDay, view, defaultOpen, counter }: { routine?: Routine, user: IUser, setCreate?: (create: boolean) => void, weekDay?: string, view?: boolean, defaultOpen?: boolean, counter?: number }) => {
     const [open, setOpen] = useState<boolean>(defaultOpen || false);
     return (
         <div className="w-full flex flex-col p-4 rounded-lg bg-neutral-800 h-fit">
@@ -25,11 +25,11 @@ const RoutineCard = ({ routine, user, setCreate, weekDay, view, defaultOpen }: {
                 
             </div>
             }
-            {open &&
-                <div className="flex mt-2 p-2 rounded-xl bg-neutral-900 h-[100%]">
-                    <CreatePage routine={routine} user={user} setCreate={setCreate} />
+
+                <div className={`flex mt-2 p-2 rounded-xl bg-neutral-900 h-[100%] ${open ? "" : "hidden"}`}>
+                    <CreatePage routine={routine} user={user} setCreate={setCreate} counter={counter} />
                 </div> 
-            }
+            
         </div>
 
     );
