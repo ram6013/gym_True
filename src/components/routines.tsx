@@ -19,7 +19,7 @@ export default function Routines({routines, user, view}: { routines: Routine[], 
         routines?.map((routine: Routine, key) => {
             return (
                 <div key={key} className="mt-4">
-                <RoutineCard key={key} routine={routine} user={user} view={view}/>
+                <RoutineCard key={key} routine={routine} user={user} view={view} defaultOpen={true}/>
                 </div>
             )
         }) 

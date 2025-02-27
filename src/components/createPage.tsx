@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useRef, useState } from "react";
 import { Input } from "./ui/input";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 import { createRoutine, Exercise, ExerciseInfo, Routine, saveRoutine } from "@/app/routines/actions";
@@ -12,9 +12,9 @@ import toast from "react-hot-toast";
 
 
 
-export default function CreatePage({ routine, user, setCreate }: { routine?: Routine, user: IUser, setCreate?: (create: boolean) => void }) {
+export default function CreatePage({ routine, user, setCreate, counter }: { routine?: Routine, user: IUser, setCreate?: (create: boolean) => void, counter?: number }) {
   const [numEx, setNumEx] = useState<number>(routine?.num_ex ?? 3);
-
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(e.target.value);
     if (!Number.isNaN(value)) {
@@ -29,6 +29,7 @@ export default function CreatePage({ routine, user, setCreate }: { routine?: Rou
       setNumEx(value);
     }
   }
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const ejercicios: Exercise[] = [];
@@ -36,6 +37,7 @@ export default function CreatePage({ routine, user, setCreate }: { routine?: Rou
     for (let i = 0; i < numEx; i++) {
       const nameInput = e.currentTarget[`Ejercicio${i}`] as HTMLInputElement;
       const seriesInput = e.currentTarget[`NumSerie${i}`] as HTMLInputElement;
+      const comentariosInput = e.currentTarget[`Comentarios${i}`] as HTMLInputElement;
       const numSeries = Number(seriesInput.value)
       if (nameInput && seriesInput) {
         const series: ExerciseInfo[] = []
@@ -56,6 +58,7 @@ export default function CreatePage({ routine, user, setCreate }: { routine?: Rou
         const exercise: Exercise = {
           name: nameInput.value,
           num_serie: Number(seriesInput.value),
+          comentarios: comentariosInput.value,
           series: series
         }
         ejercicios.push(exercise)
@@ -79,21 +82,41 @@ export default function CreatePage({ routine, user, setCreate }: { routine?: Rou
     }
     setCreate?.(false)
     toast.success("Rutina guardada")
-    window.location.reload()
+    
   };
 
 
+
+  const HandleOnchangeForm = (e: React.FormEvent<HTMLFormElement>) => {
+    if (counter){
+    e.preventDefault();
+    const { value } = e.target as HTMLInputElement;
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    timeoutRef.current = setTimeout(() => {
+      if (value) {
+        if (document.forms[counter-1]){
+          document.forms[counter-1].requestSubmit();
+        }
+      }
+    }, 1500);
+  }
+  };
+
+
+
+
+
   return (
-    <form onSubmit={(e) => handleSubmit(e)} className="flex flex-col w-full p-1  gap-4">
+    <form id="formulario" onSubmit={(e) => handleSubmit(e)} onChange={(e) => HandleOnchangeForm(e)} className="flex flex-col w-full p-1  gap-4">
       <div className="flex justify-between gap-10">
         <div className="w-full">
           <label className="text-white" htmlFor="Rutina">Nombre de la rutina:</label>
           <Input className="text-white" type="text" name="Rutina" defaultValue={routine?.name} />
         </div>
         <div className="w-full">
-          <label className="text-white" htmlFor="NumEj">Número de ejs</label>
+          <label className="text-white" htmlFor="NumEj">Nº de ejercicios</label>
           <Input
-            className="text-white"
+            className="text-white "
             max={15}
             min={1}
             defaultValue={routine?.num_ex}
@@ -107,7 +130,7 @@ export default function CreatePage({ routine, user, setCreate }: { routine?: Rou
       {Array.from({ length: numEx }, (_, index: number) => (
         <Sets key={index} id={index} rotuine={routine}/>
       ))}
-      <button className="text-white" type="submit">Guardar Rutina</button>
+      <button className="text-white text-2xl p-2" type="submit">Guardar Rutina</button>
     </form>
   );
 }
@@ -156,10 +179,11 @@ const Sets = ({ id, rotuine }: { id: number, rotuine?: Routine }) => {
             </button>
           </div>
         </div>
-        {visibility &&
+        <div className={`${visibility ? "" : "hidden"} flex flex-col gap-4`}>
+        { 
           Array.from({ length: numSerie }, (_, index: number) => (
             <div
-              className="flex flex-row gap-2 justify-center items-center "
+              className={`flex flex-row gap-2 justify-center items-center ${visibility ? "" : "hidden"}` }
               key={index}
             >
               <label htmlFor="PESO" className="text-white">Kg</label>
@@ -170,6 +194,8 @@ const Sets = ({ id, rotuine }: { id: number, rotuine?: Routine }) => {
               <Input type="numeric" className="text-white" name={`Ejercicio${id}RPE${index}`} defaultValue={rotuine?.exercises[id]?.series[index]?.rpe} />
             </div>
           ))}
+          <textarea name={`Comentarios${id}`} className="bg-neutral-800 text-white placeholder:text-white w-full p-2" defaultValue={rotuine?.exercises[id]?.comentarios} placeholder="Comentarios adicionales..."></textarea>
+        </div>
       </div>
     </>
   );

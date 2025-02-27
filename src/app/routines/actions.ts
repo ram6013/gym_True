@@ -14,6 +14,7 @@ export type Routine = {
 export type Exercise = {
     name: string;
     num_serie: number;
+    comentarios?: string;
     series: ExerciseInfo[]
 }
 
