@@ -1,13 +1,13 @@
 "use client";
-import { FaUser, FaCalendar, FaHome } from "react-icons/fa";
+import { FaUser, FaCalendar, FaHome, FaUserFriends } from "react-icons/fa";
 import { CiMenuBurger } from "react-icons/ci";
-import { VscGraph } from "react-icons/vsc";
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 import { useOutsideClick } from "@/lib/hooks/useOutsideClick";
 import { IoMdClose } from "react-icons/io";
 import { CgGym } from "react-icons/cg";
+import Logout from "./logout-button";
 
 export default function Header() {
   const [showModal, setShowModal] = useState(false);
@@ -25,12 +25,19 @@ export default function Header() {
         ref={containerRef}
         className="flex w-auto lg:h-auto min-h-20 bg-foreground items-center justify-between "
       >
+        <div className="relative flex items-center justify-between w-full">
         <button className="lg:ml-10 z-30">
           <FaUser
             className={iconClass}
             onClick={() => setShowLogout(!showLogaut)}
           />
         </button>
+          {showLogaut && (
+            <div className="absolute top-16 left-0 lg:left-6 bg-background border-2 border-white rounded-lg">
+              <Logout setShowLogout={setShowLogout} />
+            </div>
+          )}
+        </div>
         <div className="flex absolute w-full justify-center">
           <h1 className="text-4xl lg:text-5xl text-center font-bold text-white">
             GYM Notes
@@ -92,9 +99,9 @@ function Botons({
       </button>
       <button
         className={classNameBoton}
-        onClick={() => handleNavigate("/stats")}
+        onClick={() => handleNavigate("/friends")}
       >
-        <VscGraph className={iconClass} /> <H1 text="Stats" />
+        <FaUserFriends className={iconClass} /> <H1 text="friends" />
       </button>
       <button className={classNameBoton} onClick={() => handleNavigate("/routines")}>
         <CgGym className={iconClass} />

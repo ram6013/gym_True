@@ -66,6 +66,5 @@ const DBUserSchema = z.object({
     hashed_password: z.string(),
 });
 export async function logOut() {
-  "use server";
   await signOut();
 }
