@@ -1,17 +1,47 @@
 import Friends from "@/components/friends/friends";
 import { auth } from "../../../auth";
 import { redirect } from "next/navigation";
-import { getFriends } from "./actions";
-
+import { Friend, getFriends } from "./actions";
+import { getRoutines, Routine } from "../routines/actions";
 export default async function FriendsPage() {
-        const sesion = await auth();
-        if (!sesion?.user){
-            redirect("/login");
+    const sesion = await auth();
+    if (!sesion?.user) {
+        redirect("/login");
+    }
+
+    const userPendding: string[] = [];
+    const FriendData = new Map<string, { user_id: number, routines: Routine[] }>(); 
+    const data: Friend[] | null = await getFriends(Number(sesion.user.id));
+
+    if (data) {
+        for (let i = 0; i < data.length; i++) {
+            const email = data[i].user_id_1 === Number(sesion.user.id) ? data[i].users_user_id_2_fkey.email : data[i].users_user_id_1_fkey.email; 
+            if (data[i].status === "accepted") {
+                const friendId = data[i].user_id_1 === Number(sesion.user.id) ? data[i].user_id_2 : data[i].user_id_1;
+
+                const routine = await getRoutines(friendId);
+                if (routine) {
+                    const currentData = FriendData.get(email); 
+
+                    if (currentData) {
+                        currentData.routines.push(...routine);  
+                    } else {
+                        FriendData.set(email, { user_id: friendId, routines: routine });
+                    }
+                }
+            }
+            if (data[i].status === "pending") {
+                if (data[i].user_id_2 === Number(sesion.user.id)) {
+                    userPendding.push(email);
+                }
+            }
         }
-        const data = await getFriends(Number(sesion.user.id))
+    }
+
+
     return (
         <>
-            <Friends friends={data || []} session={sesion.user}/>
+            <Friends friends={userPendding} session={Number(sesion.user.id)} friendData={FriendData} />
         </>
     );
 }

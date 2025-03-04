@@ -2,26 +2,52 @@
 import { useEffect, useState } from "react";
 import { MdOutlineMailOutline, MdOutlineMarkEmailUnread } from "react-icons/md";
 import MessageAddFriends from "./addFriends";
-import { Friend } from "@/app/friends/actions";
-import { IUser } from "@/app/(auth)/login/actions";
-import { User } from "next-auth";
+import Card from "./routine";
+import { FaAngleDown, FaAngleUp } from "react-icons/fa";
+import { Routine } from "@/app/routines/actions";
 
-export default function Friends({ friends, session }: { friends: Friend[], session: User }) {
+export default function Friends({ friends, session, friendData }: { friends: string[], session: number, friendData: Map<string, { user_id: number, routines: Routine[] }> }) {
     const [friendRequest, setFriendRequest] = useState<boolean>(false);
     const [addFriend, setAddFriend] = useState<boolean>(false);
+    const [open, setOpen] = useState<Record<string, boolean>>({});
 
     useEffect(() => {
-        setFriendRequest(friends.filter((friend: Friend) => friend.status === "pending").length > 0);
+        setFriendRequest(true);
     }, [friends]);
+
+    const toggleOpen = (email: string) => {
+        setOpen(prev => ({ ...prev, [email]: !prev[email] })); 
+    };
+
     return (
         <div>
             <div className="flex gap-6 m-2">
-                <button onClick={() => setAddFriend(!addFriend)}>{friendRequest ? <MdOutlineMarkEmailUnread className="lg:text-5xl text-4xl " /> : <MdOutlineMailOutline className="lg:text-5xl text-4xl" />}</button>
+                <button onClick={() => setAddFriend(!addFriend)}>
+                    {friends.length > 0 ? <MdOutlineMarkEmailUnread className="lg:text-5xl text-4xl text-white" /> : <MdOutlineMailOutline className="lg:text-5xl text-4xl text-white" />}
+                </button>
             </div>
-            
-                {addFriend && <div> <MessageAddFriends setAddFriend={setAddFriend} friendRequest={friendRequest} friends={friends} session={session}/></div>}
-            </div>
-  
 
+            {addFriend && (
+                <div>
+                    <MessageAddFriends setAddFriend={setAddFriend} friendRequest={friendRequest} friends={friends} id={session} />
+                </div>
+            )}
+
+            {friendData && Array.from(friendData).map(([email, { routines }]) => (
+                <div key={email} className="w-full flex flex-col p-4 rounded-lg bg-neutral-800 h-fit mb-4">
+                    <div className="flex justify-between items-center">
+                        <h1 className="text-1xl lg:text-3xl text-white">{email || ""}</h1>
+                        <button onClick={() => toggleOpen(email)}>
+                            {open[email] ? <FaAngleUp className="text-white" size={32} /> : <FaAngleDown className="text-white" size={32} />}
+                        </button>
+                    </div>
+                    <div className={`flex flex-col mt-2 p-2 rounded-xl bg-neutral-900 h-[100%] ${open[email] ? "" : "hidden"}`}>
+                        {routines.map((routine, index) => (
+                            <Card key={index} routine={routine} />
+                        ))}
+                    </div>
+                </div>
+            ))}
+        </div>
     );
 }

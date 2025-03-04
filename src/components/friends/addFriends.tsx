@@ -5,13 +5,28 @@ import { FaCheck } from "react-icons/fa";
 import { IoSend } from "react-icons/io5";
 import { IoClose } from "react-icons/io5";
 import { useOutsideClick } from "@/lib/hooks/useOutsideClick";
-import { Friend } from "@/app/friends/actions";
-import { User } from "next-auth";
+import { addFriend } from "@/app/friends/actions";
+import toast from "react-hot-toast";
 
 
-export default function MessageAddFriends({ setAddFriend, friends, session }: { setAddFriend: (value: boolean) => void, friendRequest: boolean, friends?: Friend[], session: User }) {
+export default function MessageAddFriends({ setAddFriend, friends, id }: { setAddFriend: (value: boolean) => void, friendRequest: boolean, friends?: string[], id: number }) {
     const [activeTab, setActiveTab] = useState<"tab1" | "tab2">("tab1");
+    const sendRequest = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const friendId = Number((document.getElementById("friendId") as HTMLInputElement)?.value);
+        console.log(friendId);
+        try {
+            const response = await addFriend(id, friendId);
+            if (response === true) {
+                toast.success("Friend request sent");
+                return
+            }
+            toast.error(response.toString());
+        } catch (error) {
+            console.error(error);
+        }
 
+    }
     const containerRef = useRef(null);
     useOutsideClick(containerRef, () => setAddFriend(false));
     return (
@@ -28,31 +43,29 @@ export default function MessageAddFriends({ setAddFriend, friends, session }: { 
                         className={`p-4 ${activeTab === "tab2" ? "border-b-2 border-blue-500" : ""}`}
                         onClick={() => setActiveTab("tab2")}
                     >
-                        {friends ? <MdOutlineMarkEmailUnread className="lg:text-5xl text-4xl"/> : <MdOutlineMailOutline className="lg:text-5xl text-4xl"/>}
+                        {friends!.length > 0  ? <MdOutlineMarkEmailUnread className="lg:text-5xl text-4xl"/> : <MdOutlineMailOutline className="lg:text-5xl text-4xl"/>}
                     </button>
                 </div>
                 <div className="p-4">
                     {activeTab === "tab1" && 
                     <div>
-                    <h1 className="text-white font-extrabold text-2xl">Tu ID es: {session.id}</h1>
-                    <h1>Ingrese el id de su amigo:</h1>
-                    <div className="flex gap-4 justify-center p-4">
+                            <h1 className="text-white font-extrabold text-2xl">Tu ID es: {id}</h1>
+                    <h1 className="text-white">Ingrese el id de su amigo:</h1>
+                            <form onSubmit={sendRequest} className="flex gap-4 justify-center p-4">
                         
-                        <input className="text-black p-2 font-extrabold" placeholder=" ID "></input>
-                        <button className="text-black"><IoSend className="lg:text-5xl text-4xl text-white"/></button>
-                    </div>
+                                <input id="friendId" type="number" className="text-black p-2 font-extrabold" placeholder=" ID "></input>
+                                <button type="submit" className="text-black"><IoSend className="lg:text-5xl text-4xl text-white" /></button>
+                            </form>
                     </div>}
                     {activeTab === "tab2" && (
-                    friends && friends.length > 0 ? (
-                        friends.filter((friend: Friend) => friend.status === "pending").length > 0 ? (
+                        friends && friends.length > 0 ? (
                             friends
-                                .filter((friend: Friend) => friend.status === "pending")
-                                .map((friend: Friend, index) => (
+                                .map((friend: string, index) => (
                                     <div className="flex gap-4 items-center mb-2" key={index}>
                                         <h1 className="text-white font-extrabold text-2xl truncate w-auto max-w-[80%]">
-                                            {friend.users.email}
+                                            {friend}
                                         </h1>
-                                        <button className="text-black">
+                                        <button className="text-black" >
                                             <FaCheck className="lg:text-3xl text-3xl text-green-500" />
                                         </button>
                                         <button className="text-black">
@@ -61,12 +74,10 @@ export default function MessageAddFriends({ setAddFriend, friends, session }: { 
                                     </div>
                                 ))
                         ) : (
-                            <h1>No tienes ninguna solicitud pendiente...</h1>
-                        )
-                    ) : (
-                        <h1>Cargando solicitudes...</h1>
+                            <h1 className="text-white">No tienes ninguna solicitud pendiente...</h1>
+                            )
                     )
-                )}
+                    }
                 </div>
             </div>
         </div>
