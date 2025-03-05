@@ -6,8 +6,15 @@ import { IUser } from "@/app/(auth)/login/actions";
 import DeleteButton from "./delete-button";
 import DropdownButton from "./dropdown";
 import { FaAngleDown, FaAngleUp } from "react-icons/fa";
+import { NotCreatedButton } from "./ui/not-created-button";
 const RoutineCard = ({ routine, user, setCreate, weekDay, view, defaultOpen, counter }: { routine?: Routine, user: IUser, setCreate?: (create: boolean) => void, weekDay?: string, view?: boolean, defaultOpen?: boolean, counter?: number }) => {
     const [open, setOpen] = useState<boolean>(defaultOpen || false);
+        if (counter === 0) {
+            return <div className="flex flex-col h-screen items-center gap-4 p-8" >
+                <h1 className="text-4xl text-white">No routines assigned</h1>
+                <NotCreatedButton/>
+            </div >;
+        }
     return (
         <div className="w-full flex flex-col p-4 rounded-lg bg-neutral-800 h-fit">
             {!view &&

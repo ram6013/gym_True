@@ -67,7 +67,6 @@ const SetsFriends = ({ id, rotuine }: { id: number, rotuine?: Routine }) => {
               <h1  className="text-white">{rotuine?.exercises[id]?.series[index]?.rpe}</h1>
             </div>
           ))}
-          <h4 className="bg-neutral-800 text-white  w-full p-2">{rotuine?.exercises[id]?.comentarios}</h4>
         </div>
       </div>
     </>

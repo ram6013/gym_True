@@ -1,16 +1,16 @@
 import { useRef, useState } from "react";
 import { FiUserPlus } from "react-icons/fi";
 import { MdOutlineMailOutline, MdOutlineMarkEmailUnread } from "react-icons/md";
-import { FaCheck } from "react-icons/fa";
+import { FaCheck, FaTrash } from "react-icons/fa";
 import { IoSend } from "react-icons/io5";
 import { IoClose } from "react-icons/io5";
 import { useOutsideClick } from "@/lib/hooks/useOutsideClick";
-import { addFriend } from "@/app/friends/actions";
+import { acceptFriend, addFriend, rejectFriend } from "@/app/friends/actions";
 import toast from "react-hot-toast";
+;
 
-
-export default function MessageAddFriends({ setAddFriend, friends, id }: { setAddFriend: (value: boolean) => void, friendRequest: boolean, friends?: string[], id: number }) {
-    const [activeTab, setActiveTab] = useState<"tab1" | "tab2">("tab1");
+export default function MessageAddFriends({ setAddFriend, friends, id }: { setAddFriend: (value: boolean) => void, friends?: { email: string, user_id: number, id: number }[], id: number }) {
+    const [activeTab, setActiveTab] = useState<"tab1" | "tab2" | "tab3">("tab1");
     const sendRequest = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const friendId = Number((document.getElementById("friendId") as HTMLInputElement)?.value);
@@ -25,8 +25,39 @@ export default function MessageAddFriends({ setAddFriend, friends, id }: { setAd
         } catch (error) {
             console.error(error);
         }
-
     }
+    const aceeptRequest = async (inedx: number) => {
+        try {
+            const response = await acceptFriend(id, friends![inedx].user_id);
+            if (response === true) {
+                toast.success("Friend request accepted");
+                window.location.reload();
+                setAddFriend(true);
+                return
+            }
+            toast.error("Error on accepting friend request");
+        }
+        catch (error) {
+            console.error(error);
+        }
+    }
+
+    const cancelRequest = async (index: number) => {
+        try {
+            const response = await rejectFriend(friends![index].id);
+            if (response === true) {
+                toast.success("Friend request rejected");
+                window.location.reload();
+                setAddFriend(true);
+                return
+            }
+            toast.error("Error on rejecting friend request");
+        }
+        catch (error) {
+            console.error(error);
+        }
+    }
+
     const containerRef = useRef(null);
     useOutsideClick(containerRef, () => setAddFriend(false));
     return (
@@ -60,15 +91,15 @@ export default function MessageAddFriends({ setAddFriend, friends, id }: { setAd
                     {activeTab === "tab2" && (
                         friends && friends.length > 0 ? (
                             friends
-                                .map((friend: string, index) => (
+                                .map((friend, index) => (
                                     <div className="flex gap-4 items-center mb-2" key={index}>
                                         <h1 className="text-white font-extrabold text-2xl truncate w-auto max-w-[80%]">
-                                            {friend}
+                                            {friend.email}
                                         </h1>
-                                        <button className="text-black" >
+                                        <button className="text-black" onClick={() => aceeptRequest(index)}>
                                             <FaCheck className="lg:text-3xl text-3xl text-green-500" />
                                         </button>
-                                        <button className="text-black">
+                                        <button className="text-black" onClick={() => cancelRequest(index)}>
                                             <IoClose className="lg:text-5xl text-5xl text-red-500" />
                                         </button>
                                     </div>
@@ -77,6 +108,10 @@ export default function MessageAddFriends({ setAddFriend, friends, id }: { setAd
                             <h1 className="text-white">No tienes ninguna solicitud pendiente...</h1>
                             )
                     )
+                    }
+                    {activeTab === "tab3" && 
+                    <div>
+                    </div>
                     }
                 </div>
             </div>

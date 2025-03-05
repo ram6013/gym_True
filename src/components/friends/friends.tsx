@@ -6,10 +6,12 @@ import Card from "./routine";
 import { FaAngleDown, FaAngleUp } from "react-icons/fa";
 import { Routine } from "@/app/routines/actions";
 
-export default function Friends({ friends, session, friendData }: { friends: string[], session: number, friendData: Map<string, { user_id: number, routines: Routine[] }> }) {
+
+export default function Friends({ friends, session, friendData }: { friends: { email: string, user_id: number, id: number }[], session: number, friendData: Map<string, { user_id: number, routines: Routine[] }> }) {
     const [friendRequest, setFriendRequest] = useState<boolean>(false);
     const [addFriend, setAddFriend] = useState<boolean>(false);
     const [open, setOpen] = useState<Record<string, boolean>>({});
+    
 
     useEffect(() => {
         setFriendRequest(true);
@@ -18,6 +20,9 @@ export default function Friends({ friends, session, friendData }: { friends: str
     const toggleOpen = (email: string) => {
         setOpen(prev => ({ ...prev, [email]: !prev[email] })); 
     };
+
+
+
 
     return (
         <div>
@@ -29,7 +34,7 @@ export default function Friends({ friends, session, friendData }: { friends: str
 
             {addFriend && (
                 <div>
-                    <MessageAddFriends setAddFriend={setAddFriend} friendRequest={friendRequest} friends={friends} id={session} />
+                    <MessageAddFriends setAddFriend={setAddFriend} friends={friends} id={session} />
                 </div>
             )}
 
@@ -42,6 +47,7 @@ export default function Friends({ friends, session, friendData }: { friends: str
                         </button>
                     </div>
                     <div className={`flex flex-col mt-2 p-2 rounded-xl bg-neutral-900 h-[100%] ${open[email] ? "" : "hidden"}`}>
+                        {routines.length === 0 && <p className="text-white">No routines found</p>}
                         {routines.map((routine, index) => (
                             <Card key={index} routine={routine} />
                         ))}

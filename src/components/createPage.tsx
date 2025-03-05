@@ -13,7 +13,7 @@ import toast from "react-hot-toast";
 
 
 export default function CreatePage({ routine, user, setCreate, counter }: { routine?: Routine, user: IUser, setCreate?: (create: boolean) => void, counter?: number }) {
-  const [numEx, setNumEx] = useState<number>(routine?.num_ex ?? 3);
+  const [numEx, setNumEx] = useState<number>(routine?.num_ex ?? 0);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(e.target.value);
@@ -29,6 +29,7 @@ export default function CreatePage({ routine, user, setCreate, counter }: { rout
       setNumEx(value);
     }
   }
+
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -48,9 +49,9 @@ export default function CreatePage({ routine, user, setCreate, counter }: { rout
           series.push(
             {
               
-              reps: Number(repsInput.value),
-              kg: Number(kgInput.value),
-              rpe: Number(rpeInput.value)
+              reps: Number(repsInput.value.replace(",", ".")),
+              kg: Number(kgInput.value.replace(",", ".")),
+              rpe: Number(rpeInput.value.replace(",", "."))
             }
           )
         }
@@ -80,9 +81,9 @@ export default function CreatePage({ routine, user, setCreate, counter }: { rout
     if (response == false){
       console.error("No se ha podido guardar la rutina")
     }
-    setCreate?.(false)
+    window.location.reload();
+    setCreate?.(false)    
     toast.success("Rutina guardada")
-    
   };
 
 
@@ -111,15 +112,15 @@ export default function CreatePage({ routine, user, setCreate, counter }: { rout
       <div className="flex justify-between gap-10">
         <div className="w-full">
           <label className="text-white" htmlFor="Rutina">Nombre de la rutina:</label>
-          <Input className="text-white" type="text" name="Rutina" defaultValue={routine?.name} />
+          <Input className="text-white" type="text" name="Rutina" defaultValue={routine?.name ?? ""} />
         </div>
         <div className="w-full">
           <label className="text-white" htmlFor="NumEj">Nº de ejercicios</label>
           <Input
             className="text-white "
             max={15}
-            min={1}
-            defaultValue={routine?.num_ex}
+            min={0}
+            defaultValue={routine?.num_ex ?? 0}
             type="text"
             name="NumEj"
             onChange={handleChange}
@@ -165,9 +166,9 @@ const Sets = ({ id, rotuine }: { id: number, rotuine?: Routine }) => {
     <>
       <div className="flex border rounded-xl flex-col gap-4 p-4 w-full">
         <div className="justify-between flex gap-2  items-center  w-full">
-          <Input type="text" className="text-white max-w-40" placeholder={`Ejercicio ${id}`} name={`Ejercicio${id}`} defaultValue={rotuine?.exercises[id]?.name}></Input>
+          <Input type="text" className="text-white max-w-40" placeholder={`Ejercicio ${id}`} name={`Ejercicio${id}`} defaultValue={rotuine?.exercises[id]?.name ?? ""}></Input>
           <div className="flex gap-3">
-            <Input type="number" max={6} min={1} defaultValue={rotuine?.exercises[id]?.num_serie} name={`NumSerie${id}`} onChange={handleChange} className={"text-white w-12 text-center " + NoInputBar}></Input>
+            <Input type="number" max={6} min={0} defaultValue={rotuine?.exercises[id]?.num_serie ?? 0} name={`NumSerie${id}`} onChange={handleChange} className={"text-white w-12 text-center " + NoInputBar}></Input>
             <button className="text-2xl"
               type="button"
               onClick={(e) => {
@@ -187,14 +188,14 @@ const Sets = ({ id, rotuine }: { id: number, rotuine?: Routine }) => {
               key={index}
             >
               <label htmlFor="PESO" className="text-white">Kg</label>
-              <Input type="numeric" className="text-white" name={`Ejercicio${id}KG${index}`} defaultValue={rotuine?.exercises[id]?.series[index]?.kg} />
+              <Input type="text" className="text-white" name={`Ejercicio${id}KG${index}`} defaultValue={rotuine?.exercises[id]?.series[index]?.kg ?? ""} />
               <label htmlFor="REPS" className="text-white">Reps</label>
-              <Input type="numeric" className="text-white" name={`Ejercicio${id}REPS${index}`} defaultValue={rotuine?.exercises[id]?.series[index]?.reps} />
+              <Input type="text" className="text-white" name={`Ejercicio${id}REPS${index}`} defaultValue={rotuine?.exercises[id]?.series[index]?.reps ?? ""} />
               <label htmlFor="RPE"  className="text-white">RPE</label>
-              <Input type="numeric" className="text-white" name={`Ejercicio${id}RPE${index}`} defaultValue={rotuine?.exercises[id]?.series[index]?.rpe} />
+              <Input type="text" className="text-white" name={`Ejercicio${id}RPE${index}`} defaultValue={rotuine?.exercises[id]?.series[index]?.rpe ?? ""} />
             </div>
           ))}
-          <textarea name={`Comentarios${id}`} className="bg-neutral-800 text-white placeholder:text-white w-full p-2" defaultValue={rotuine?.exercises[id]?.comentarios} placeholder="Comentarios adicionales..."></textarea>
+          <textarea name={`Comentarios${id}`} className="bg-neutral-800 text-white placeholder:text-white w-full p-2" defaultValue={rotuine?.exercises[id]?.comentarios ?? ""} placeholder="Comentarios adicionales..."></textarea>
         </div>
       </div>
     </>

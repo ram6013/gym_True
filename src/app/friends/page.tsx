@@ -9,7 +9,7 @@ export default async function FriendsPage() {
         redirect("/login");
     }
 
-    const userPendding: string[] = [];
+    const userPendding: { email: string, user_id: number, id: number}[] = [];
     const FriendData = new Map<string, { user_id: number, routines: Routine[] }>(); 
     const data: Friend[] | null = await getFriends(Number(sesion.user.id));
 
@@ -31,9 +31,8 @@ export default async function FriendsPage() {
                 }
             }
             if (data[i].status === "pending") {
-                if (data[i].user_id_2 === Number(sesion.user.id)) {
-                    userPendding.push(email);
-                }
+                    const user_id = data[i].user_id_1 === Number(sesion.user.id) ? data[i].user_id_2 : data[i].user_id_1;
+                    userPendding.push({ email: email, user_id: user_id, id: data[i].id });
             }
         }
     }

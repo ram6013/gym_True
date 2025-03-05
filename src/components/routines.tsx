@@ -14,7 +14,7 @@ export default function Routines({routines, user, view}: { routines: Routine[], 
     return (
         <div >
             <button className="bg-green-800 hover:bg-green-600 text-white font-bold py-2 px-4 rounded ml-2 mt-4" onClick={() => setCreate(!create)}>{create ? "Cerrar" : "Crear rutina"}</button>
-            {create ? <div className="mt-4"><RoutineCard setCreate={setCreate} user={user} /> </div>
+            {create ? <div className="mt-4"><RoutineCard setCreate={setCreate} user={user} defaultOpen={true}/> </div>
             :
         routines?.map((routine: Routine, key) => {
             return (

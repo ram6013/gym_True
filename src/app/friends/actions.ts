@@ -7,6 +7,7 @@ export type Friend = {
     status: "pending" | "accepted" | "rejected"
     users_user_id_1_fkey: {email: string}
     users_user_id_2_fkey: {email: string}
+    id: number
 }
 
 export type FriendName = {
@@ -51,7 +52,7 @@ export async function getFriends(user_id: number) {
 
 
 export async function acceptFriend(user_id_1: number, user_id_2: number) {
-    const {error} = await supabase.from("friends").update({status: "accepted"}).eq("user_id_1", user_id_1).eq("user_id_2", user_id_2)
+    const {error} = await supabase.from("friends").update({status: "accepted"}).or(`user_id_1.eq.${user_id_1}, user_id_2.eq.${user_id_1}, user_id_1.eq.${user_id_2}, user_id_2.eq.${user_id_2}`)
     if (error) {
         console.error(error)
         return false
@@ -59,12 +60,16 @@ export async function acceptFriend(user_id_1: number, user_id_2: number) {
     return true
 }
 
-export async function rejectFriend(user_id_1: number, user_id_2: number) {
-    const {error} = await supabase.from("friends").delete().eq("user_id_1", user_id_1).eq("user_id_2", user_id_2)
+export async function rejectFriend(id: number) {
+    const { error } = await supabase
+        .from("friends")
+        .delete().eq("id", id)
+
     if (error) {
-        console.error(error)
-        return false
+        console.error(error);
+        return false;
     }
-    return true
+    return true;
 }
+
 
