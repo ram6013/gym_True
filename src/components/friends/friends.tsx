@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { MdOutlineMailOutline, MdOutlineMarkEmailUnread } from "react-icons/md";
 import MessageAddFriends from "./addFriends";
 import Card from "./routine";
@@ -7,15 +7,12 @@ import { FaAngleDown, FaAngleUp } from "react-icons/fa";
 import { Routine } from "@/app/routines/actions";
 
 
-export default function Friends({ friends, session, friendData }: { friends: { email: string, user_id: number, id: number }[], session: number, friendData: Map<string, { user_id: number, routines: Routine[] }> }) {
-    const [friendRequest, setFriendRequest] = useState<boolean>(false);
+export default function Friends({ friends, session, friendData, friendsAccepted }: { friends: { email: string, user_id: number, id: number }[], session: number, friendData: Map<string, { user_id: number, routines: Routine[] }>, friendsAccepted: { email: string, user_id: number, id: number }[] }) {
     const [addFriend, setAddFriend] = useState<boolean>(false);
     const [open, setOpen] = useState<Record<string, boolean>>({});
     
 
-    useEffect(() => {
-        setFriendRequest(true);
-    }, [friends]);
+
 
     const toggleOpen = (email: string) => {
         setOpen(prev => ({ ...prev, [email]: !prev[email] })); 
@@ -34,9 +31,17 @@ export default function Friends({ friends, session, friendData }: { friends: { e
 
             {addFriend && (
                 <div>
-                    <MessageAddFriends setAddFriend={setAddFriend} friends={friends} id={session} />
+                    <MessageAddFriends setAddFriend={setAddFriend} friends={friends} id={session} friendsAccepted={friendsAccepted} />
                 </div>
             )}
+            {
+                friendData.size === 0 && <div className="flex items-center w-full justify-center">
+                    <button onClick={() => setAddFriend(true)} className="text-blue-400 text-center lg:text-4xl text-2xl underline flex items-center gap-2">
+                        añade amigos en <MdOutlineMailOutline className="text-blue-400" size={28} />
+                    </button>
+                </div>
+
+            }
 
             {friendData && Array.from(friendData).map(([email, { routines }]) => (
                 <div key={email} className="w-full flex flex-col p-4 rounded-lg bg-neutral-800 h-fit mb-4">

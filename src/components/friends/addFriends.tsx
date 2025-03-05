@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { FiUserPlus } from "react-icons/fi";
 import { MdOutlineMailOutline, MdOutlineMarkEmailUnread } from "react-icons/md";
-import { FaCheck, FaTrash } from "react-icons/fa";
+import { FaCheck, FaTrash, FaUserFriends } from "react-icons/fa";
 import { IoSend } from "react-icons/io5";
 import { IoClose } from "react-icons/io5";
 import { useOutsideClick } from "@/lib/hooks/useOutsideClick";
@@ -9,8 +9,8 @@ import { acceptFriend, addFriend, rejectFriend } from "@/app/friends/actions";
 import toast from "react-hot-toast";
 ;
 
-export default function MessageAddFriends({ setAddFriend, friends, id }: { setAddFriend: (value: boolean) => void, friends?: { email: string, user_id: number, id: number }[], id: number }) {
-    const [activeTab, setActiveTab] = useState<"tab1" | "tab2" | "tab3">("tab1");
+export default function MessageAddFriends({ setAddFriend, friends, id, friendsAccepted }: { setAddFriend: (value: boolean) => void, friends?: { email: string, user_id: number, id: number }[], id: number, friendsAccepted: { email: string, user_id: number, id: number }[] }) {
+    const [activeTab, setActiveTab] = useState<"sendRequest" | "friendRequests" | "allFriends">("sendRequest");
     const sendRequest = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const friendId = Number((document.getElementById("friendId") as HTMLInputElement)?.value);
@@ -58,6 +58,22 @@ export default function MessageAddFriends({ setAddFriend, friends, id }: { setAd
         }
     }
 
+    const deleteFriend = async (index: number) => {
+        try {
+            const response = await rejectFriend(friendsAccepted![index].id);
+            if (response === true) {
+                toast.success("Friend deleted");
+                window.location.reload();
+                setAddFriend(true);
+                return
+            }
+            toast.error("Error on deleting friend");
+        }
+        catch (error) {
+            console.error(error);
+        }
+    }
+
     const containerRef = useRef(null);
     useOutsideClick(containerRef, () => setAddFriend(false));
     return (
@@ -65,20 +81,26 @@ export default function MessageAddFriends({ setAddFriend, friends, id }: { setAd
             <div ref={containerRef} className="bg-neutral-800 rounded-lg  w-[90%]  lg:min-w-[50%] lg:max-w-[70%] h-[40%] max-h-[40%] overflow-y-auto">
                 <div className="flex justify-around border-b  text-white pt-2 pl-2 pr-2">
                     <button
-                        className={`p-4 ${activeTab === "tab1" ? "border-b-2 border-blue-500" : ""}`}
-                        onClick={() => setActiveTab("tab1")}
+                        className={`p-4 ${activeTab === "sendRequest" ? "border-b-2 border-blue-500" : ""}`}
+                        onClick={() => setActiveTab("sendRequest")}
                     >
                         <FiUserPlus className="lg:text-5xl text-4xl" />
                     </button>
                     <button
-                        className={`p-4 ${activeTab === "tab2" ? "border-b-2 border-blue-500" : ""}`}
-                        onClick={() => setActiveTab("tab2")}
+                        className={`p-4 ${activeTab === "friendRequests" ? "border-b-2 border-blue-500" : ""}`}
+                        onClick={() => setActiveTab("friendRequests")}
                     >
                         {friends!.length > 0  ? <MdOutlineMarkEmailUnread className="lg:text-5xl text-4xl"/> : <MdOutlineMailOutline className="lg:text-5xl text-4xl"/>}
                     </button>
+                    <button
+                        className={`p-4 ${activeTab === "allFriends" ? "border-b-2 border-blue-500" : ""}`}
+                        onClick={() => setActiveTab("allFriends")}
+                    >
+                        <FaUserFriends className="lg:text-5xl text-4xl" />
+                    </button>
                 </div>
                 <div className="p-4">
-                    {activeTab === "tab1" && 
+                    {activeTab === "sendRequest" && 
                     <div>
                             <h1 className="text-white font-extrabold text-2xl">Tu ID es: {id}</h1>
                     <h1 className="text-white">Ingrese el id de su amigo:</h1>
@@ -88,7 +110,7 @@ export default function MessageAddFriends({ setAddFriend, friends, id }: { setAd
                                 <button type="submit" className="text-black"><IoSend className="lg:text-5xl text-4xl text-white" /></button>
                             </form>
                     </div>}
-                    {activeTab === "tab2" && (
+                    {activeTab === "friendRequests" && (
                         friends && friends.length > 0 ? (
                             friends
                                 .map((friend, index) => (
@@ -109,10 +131,25 @@ export default function MessageAddFriends({ setAddFriend, friends, id }: { setAd
                             )
                     )
                     }
-                    {activeTab === "tab3" && 
-                    <div>
-                    </div>
+                    {activeTab === "allFriends" && (
+                        friendsAccepted && friendsAccepted.length > 0 ? (
+                            friendsAccepted
+                                .map((friend, index) => (
+                                    <div className="flex gap-4 items-center mb-2" key={index}>
+                                        <h1 className="text-white font-extrabold text-2xl truncate w-auto max-w-[80%]">
+                                            {friend.email}
+                                        </h1>
+                                        <button onClick={() => deleteFriend(index)} className="text-white"><FaTrash className="text-red-500 text-2xl" /></button>
+                                    </div>
+                                ))
+                        ) : (
+                                <h1 className="text-white text-center">No tienes amigos todavía. Pero ya conseguirás. No te preocupes! 😄</h1>
+                        ))
                     }
+                    <div>
+
+                    </div>
+
                 </div>
             </div>
         </div>
