@@ -81,8 +81,10 @@ export default function CreatePage({ routine, user, setCreate, counter }: { rout
     if (response == false){
       console.error("No se ha podido guardar la rutina")
     }
-    window.location.reload();
-    setCreate?.(false)    
+    if (setCreate) {
+      window.location.reload();
+      setCreate(false)
+    }
     toast.success("Rutina guardada")
   };
 
