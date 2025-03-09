@@ -1,5 +1,5 @@
 "use client";
-import { FaUser, FaCalendar, FaHome, FaUserFriends } from "react-icons/fa";
+import { FaUser, FaHome, FaUserFriends } from "react-icons/fa";
 import { CiMenuBurger } from "react-icons/ci";
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -91,12 +91,12 @@ function Botons({
   };
   return (
     <div className={classNameDiv}>
-      <button
+      {/* <button
         className={classNameBoton}
         onClick={() => handleNavigate("/calendar")}
       >
         <FaCalendar className={iconClass} /> <H1 text="Calendar" />
-      </button>
+      </button> */}
       <button
         className={classNameBoton}
         onClick={() => handleNavigate("/friends")}
